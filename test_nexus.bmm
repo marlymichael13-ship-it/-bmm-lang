@@ -1,0 +1,3 @@
+emit_bmm(nexus_mesh("/data/data/com.termux/files/home/bmm_engine"))
+emit_bmm(nexus_bridge("asm:ADD X4 X5;b64:enc|bmm_unified;spike:1,0,1,1,0|0.1|50"))
+emit_bmm(nexus_sys("/data/data/com.termux/files/usr/bin/bmm_lang"))

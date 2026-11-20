@@ -1,0 +1,4 @@
+emit_bmm(lib65_fs_snap("/data/data/com.termux/files/home/bmm_engine/bmm_libs_pack9.go", ""))
+emit_bmm(lib66_fs_find("/data/data/com.termux/files/home/bmm_engine", ".bmm"))
+emit_bmm(lib67_net_ping("127.0.0.1:8080", "400"))
+emit_bmm(lib68_http_probe("http://127.0.0.1:8080", "2"))

@@ -1,0 +1,4 @@
+emit_bmm(lib61_json_get("{\"engine\":\"bmm_lang\",\"ver\":64}", "engine"))
+emit_bmm(lib62_b64("enc", "bmm_data_pack8"))
+emit_bmm(lib63_hex_codec("enc", "BMM"))
+emit_bmm(lib64_regex_match("find", "[0-9]+\\.[0-9]+", "latency=14.8ms"))

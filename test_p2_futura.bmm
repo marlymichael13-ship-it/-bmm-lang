@@ -1,0 +1,4 @@
+emit_bmm(p2_futura("bmm cyber pp mm syn warp fut"))
+emit_bmm(p2_futura("p m cyber-node"))
+emit_bmm(p2_alias("f.cyber"))
+emit_bmm(p2_alias("f.sys"))

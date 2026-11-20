@@ -1,0 +1,2 @@
+emit_bmm(lib39_list_asc("d,b,a,c", ",", "asc"))
+emit_bmm(lib40_list_once("x,y,x,z,y", ","))

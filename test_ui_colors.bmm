@@ -1,0 +1,6 @@
+emit_bmm(bmm_pkg_info("bmm_ui"))
+emit_bmm(lib24_banner("BMM UI", "COLORS & NEXUS"))
+emit_bmm(lib25_badge("NEXUS", "ONLINE"))
+emit_bmm(lib21_red_num("404"))
+emit_bmm(lib22_blue_item("bmm_ui"))
+emit_bmm(lib23_yellow_table("NEXUS TABLE", "KEY|VAL"))

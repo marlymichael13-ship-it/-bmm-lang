@@ -1,0 +1,4 @@
+emit_bmm(p3_color("cyber bmm mm pp quantum warp"))
+emit_bmm(p3_lexicon("cyber bmm pp mm quantum neuro nexus flux warp"))
+emit_bmm(p3_compile("let x = 10 + 5 * 2; if x > 10 then color(\"cyber bmm mm pp\") else emit(\"low\")"))
+emit_bmm(p3_eval("let x = 10 + 5 * 2; loop 2 do color(\"cyber bmm mm pp\")"))

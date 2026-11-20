@@ -1,0 +1,2 @@
+emit_bmm(lib69_hmac("sign", "bmm_secret_key", "payload_v70", ""))
+emit_bmm(lib70_spike_rate("1,0,1,1,0,1,0,0,1,1", "0.1", "50"))

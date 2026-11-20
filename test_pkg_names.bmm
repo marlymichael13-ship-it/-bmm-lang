@@ -1,0 +1,5 @@
+emit_bmm(bmm_pkg_list())
+emit_bmm(bmm_pkg_info("bmm_sec"))
+emit_bmm(bmm_pkg_info("bmm_ui"))
+emit_bmm(bmm_pkg_info("bmm_cps"))
+emit_bmm(bmm_pkg_info("bmm_neuro"))

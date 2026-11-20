@@ -1,0 +1,2 @@
+emit_bmm(lib19_rnd("1", "100"))
+emit_bmm(lib20_conv("255", "16"))

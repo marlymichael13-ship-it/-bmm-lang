@@ -1,0 +1,4 @@
+emit_bmm(ram_bmm())
+emit_bmm(sys_bmm())
+emit_bmm(write_bmm("/data/data/com.termux/files/home/bmm_engine/output.txt", "BMM Engine v13.1 Active"))
+emit_bmm(read_bmm("/data/data/com.termux/files/home/bmm_engine/output.txt"))

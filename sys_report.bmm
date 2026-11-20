@@ -1,0 +1,3 @@
+emit_bmm(exists_bmm("/data/data/com.termux/files/home/bmm_engine/output.txt"))
+emit_bmm(write_bmm("/data/data/com.termux/files/home/bmm_engine/report.txt", ram_bmm()))
+emit_bmm(read_bmm("/data/data/com.termux/files/home/bmm_engine/report.txt"))
