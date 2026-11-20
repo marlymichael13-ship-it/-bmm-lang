@@ -1,0 +1,4 @@
+bmm_suite_demo()
+beam(bmm_slug("BMM Enterprise Suite 2026"))
+beam(bmm_uid("CORE"))
+beam(bmm_sha256("bmm-core-test"))

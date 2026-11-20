@@ -1160,7 +1160,15 @@ func (vm *AetherVM) ExecChunk(chunk *CompiledChunk) (Datum, error) {
 				pc++
 				break
 			}
-			val, ok := vm.Kernel.LoadSymbol(sym)
+			switch sym {
+case "p3_color", "p3_lexicon", "p3_compile", "p3_eval", "p2_futura", "p2_alias":
+if err := vm.Push(GlyphDatum("__BMM_P3_SYM__:" + sym), ins.Line); err != nil {
+return VoidDatum(), err
+}
+pc++
+continue
+}
+val, ok := vm.Kernel.LoadSymbol(sym)
 			if !ok {
 				return VoidDatum(), vm.Kernel.fault(ins.Line, "ERR_UNBOUND_VAR", fmt.Sprintf("symbol '%s' is not bound", sym), "bind symbol with let/bind or assign before reading")
 			}
@@ -1872,6 +1880,18 @@ func (vm *AetherVM) evalFieldSet(obj Datum, field string, val Datum, line int) (
 
 func (vm *AetherVM) callBuiltin(name string, args []Datum, line int) (bool, Datum, error) {
 	switch name {
+	case "beam":
+		parts := make([]string, len(args))
+		for i, a := range args {
+			parts[i] = a.Stringify()
+		}
+		joined := strings.Join(parts, " ")
+		if teachOut, handled := Part5HandleCommand(joined); handled {
+			fmt.Println(teachOut)
+			return true, GlyphDatum(teachOut), nil
+		}
+		rendered := ProBeamPrint(joined)
+		return true, GlyphDatum(rendered), nil
 	case "emit_bmm", "emit", "print", "say":
 		parts := make([]string, len(args))
 		for i, a := range args {
@@ -3622,6 +3642,26 @@ func LcmCycleDatum(a int64, b int64) int64 {
 
 func (vm *AetherVM) EvalExtendedBuiltin(name string, args []Datum, line int) (bool, Datum, error) {
 	switch name {
+	case "bmm_suite_demo":
+		out := RunBmmExtraSuiteDemo()
+		fmt.Println(out)
+		return true, GlyphDatum(out), nil
+	case "bmm_slug":
+		if len(args) < 1 {
+			return true, VoidDatum(), fmt.Errorf("bmm_slug requires 1 arg")
+		}
+		return true, GlyphDatum(BmmSmallSlug(args[0].Stringify())), nil
+	case "bmm_sha256":
+		if len(args) < 1 {
+			return true, VoidDatum(), fmt.Errorf("bmm_sha256 requires 1 arg")
+		}
+		return true, GlyphDatum(BmmMegaSHA256(args[0].Stringify())), nil
+	case "bmm_uid":
+		pfx := "BMM"
+		if len(args) > 0 {
+			pfx = args[0].Stringify()
+		}
+		return true, GlyphDatum(BmmMegaUID(pfx)), nil
 	case "pow_bmm":
 		if len(args) != 2 || args[0].Kind != DatumCycle || args[1].Kind != DatumCycle {
 			return true, VoidDatum(), vm.Kernel.fault(line, "ERR_POW_ARGS_BMM", "pow_bmm expects (base_cycle, exp_cycle)", "pass two cycle integers")
@@ -4384,12 +4424,12 @@ func (eng *AetherEngine) RunInteractiveShell() {
 				}
 				val, diagTxt, err := eng.EvalWithExplanation(repaired, "<shell-repair>")
 				if diagTxt != "" {
-					fmt.Println(diagTxt)
+					fmt.Println(ProColorizeAlways(diagTxt))
 				}
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err.Error())
 				} else if val.Kind != DatumVoid {
-					fmt.Println(val.Stringify())
+					fmt.Println(ProColorizeAlways(val.Stringify()))
 				}
 				continue
 			case strings.HasPrefix(trimmed, ":budget "):
@@ -4415,14 +4455,14 @@ func (eng *AetherEngine) RunInteractiveShell() {
 
 			val, diagTxt, err := eng.EvalWithExplanation(raw, "<shell>")
 			if diagTxt != "" {
-				fmt.Println(diagTxt)
+				fmt.Println(ProColorizeAlways(diagTxt))
 			}
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err.Error())
 				continue
 			}
 			if val.Kind != DatumVoid {
-				fmt.Println(val.Stringify())
+				fmt.Println(ProColorizeAlways(val.Stringify()))
 			}
 			continue
 		}
@@ -4435,14 +4475,14 @@ func (eng *AetherEngine) RunInteractiveShell() {
 
 			val, diagTxt, err := eng.EvalWithExplanation(script, "<shell-block>")
 			if diagTxt != "" {
-				fmt.Println(diagTxt)
+				fmt.Println(ProColorizeAlways(diagTxt))
 			}
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err.Error())
 				continue
 			}
 			if val.Kind != DatumVoid {
-				fmt.Println(val.Stringify())
+				fmt.Println(ProColorizeAlways(val.Stringify()))
 			}
 			continue
 		}
@@ -4459,12 +4499,12 @@ func (eng *AetherEngine) RunInteractiveShell() {
 
 			val, diagTxt, err := eng.EvalWithExplanation(script, "<shell-block>")
 			if diagTxt != "" {
-				fmt.Println(diagTxt)
+				fmt.Println(ProColorizeAlways(diagTxt))
 			}
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err.Error())
 			} else if val.Kind != DatumVoid {
-				fmt.Println(val.Stringify())
+				fmt.Println(ProColorizeAlways(val.Stringify()))
 			}
 
 			if curTrim != "" && eng.Compiler.isBlockStart(curTrim) {
@@ -4479,7 +4519,7 @@ func (eng *AetherEngine) RunInteractiveShell() {
 				if e2 != nil {
 					fmt.Fprintln(os.Stderr, e2.Error())
 				} else if v2.Kind != DatumVoid {
-					fmt.Println(v2.Stringify())
+					fmt.Println(ProColorizeAlways(v2.Stringify()))
 				}
 			}
 			continue
@@ -4523,7 +4563,7 @@ func main() {
 			os.Exit(1)
 		}
 		if val.Kind != DatumVoid {
-			fmt.Println(val.Stringify())
+			fmt.Println(ProColorizeAlways(val.Stringify()))
 		}
 	case "--disasm":
 		if len(os.Args) < 3 {
@@ -4653,6 +4693,9 @@ k.callStack = k.callStack[:len(k.callStack)-1]
 }
 
 func (k *AetherKernel) LoadSymbol(name string) (Datum, bool) {
+	if resolved, ok := NewPart4Bridge().Resolve(name); ok {
+		return GlyphDatum(resolved), true
+	}
 for i := len(k.frames) - 1; i >= 0; i-- {
 if val, ok := k.frames[i].Slots[name]; ok {
 return val, true
