@@ -1,3 +1,8 @@
+*.deb
+*.pkg.tar.*
+*.tar.gz
+*.zip
 bmm_lang
-bmm_lang_*
-*.exe
+.bmm_atomic_*
+__pycache__/
+*.pyc
